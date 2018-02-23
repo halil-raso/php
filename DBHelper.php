@@ -75,6 +75,19 @@ class DBHelper
 
     }
 
+    function insertArticle( $title,$content, $uid){
+        $sql = "insert into articles (`title`, `content`, `userId`) values ('$title','$content','$uid') ";
+        $this->connection->exec($sql);
+    }
+
+    function getUserId($username){
+        $stmt = $this->connection->prepare("SELECT id FROM users where username=\"".$username."\"");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $stmt->fetchColumn();
+        return $result;
+    }
+
 
 
 }

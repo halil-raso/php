@@ -34,6 +34,7 @@ include "DBHelper.php";
 <strong>Welcome</strong><?php echo ": ".$_SESSION["firstname"]."  "; ?>
 <a href="/php/logout.php">Logout</a>
 <br>
+<a href="/php/newArticle.php">Add Article</a>
 <br>
 <table>
     <tr>
