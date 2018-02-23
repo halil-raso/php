@@ -16,12 +16,14 @@ class DBHelper
 
     function __construct($hostname="localhost",$username, $password, $dbname)
     {
+
         $this->hostname = $hostname;
         $this->username = $username;
         $this->password = $password;
         $this->dbname =  $dbname;
         $this->connection = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     }
 
     function isValidUser(){
@@ -33,6 +35,46 @@ class DBHelper
         return $result;
 
     }
+
+    function getUserInfo($username){
+        $stmt = $this->connection->prepare("SELECT firstname FROM users where username=\"".$username."\"");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $stmt->fetchColumn();
+        return $result;
+    }
+
+
+    function getArticles($username){
+
+        $stmt = $this->connection->prepare("SELECT id, title, content FROM articles where userId=  (select users.id from users where username=\"".$username."\")");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $stmt->fetchAll();
+        return $result;
+    }
+
+
+    function getArticle($id){
+
+        $stmt = $this->connection->prepare("SELECT id, title, content FROM articles where id= ".$id);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $stmt->fetchAll();
+        return $result;
+
+    }
+
+
+    function updateArticle($id, $title,$content){
+
+        $sql = "UPDATE `articles` SET `title` = '$title', `content` = '$content' WHERE `articles`.`id` = $id";
+        $stmt = $this->connection->prepare($sql);
+        $result= $stmt->execute();
+        return $result;
+
+    }
+
 
 
 }

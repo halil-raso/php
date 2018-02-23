@@ -12,7 +12,7 @@ $v= $db->isValidUser();
     if($v==1){
         session_start();
         $_SESSION["username"] = $_REQUEST["username"];
-        $_SESSION["password"] = $_REQUEST["password"];
+        $_SESSION["firstname"] = $db->getUserInfo($_SESSION["username"]);
         header('Location: /php/index.php');
     }else {
         session_unset();
@@ -20,4 +20,3 @@ $v= $db->isValidUser();
         header('Location: /php/login.php');
     }
 ?>
-
