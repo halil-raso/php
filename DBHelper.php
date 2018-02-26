@@ -28,8 +28,7 @@ class DBHelper
 
     function isValidUser(){
 
-        $stmt = $this->connection->prepare("SELECT id, username, password FROM users where username=\"".$_REQUEST["username"]."\" and password=\"".$_REQUEST["password"]."\"");
-        $stmt->execute();
+        $stmt = $this->connection->exec("SELECT id, username, password FROM users where username=\"".$_REQUEST["username"]."\" and password=\"".$_REQUEST["password"]."\"");
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result = $stmt->rowCount();
         return $result;
@@ -37,8 +36,7 @@ class DBHelper
     }
 
     function getUserInfo($username){
-        $stmt = $this->connection->prepare("SELECT firstname FROM users where username=\"".$username."\"");
-        $stmt->execute();
+        $stmt = $this->connection->exec("SELECT firstname FROM users where username=\"".$username."\"");
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result= $stmt->fetchColumn();
         return $result;
@@ -47,8 +45,7 @@ class DBHelper
 
     function getArticles($username){
 
-        $stmt = $this->connection->prepare("SELECT id, title, content FROM articles where userId=  (select users.id from users where username=\"".$username."\")");
-        $stmt->execute();
+        $stmt = $this->connection->exec("SELECT id, title, content FROM articles where userId=  (select users.id from users where username=\"".$username."\")");
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result= $stmt->fetchAll();
         return $result;
@@ -57,8 +54,7 @@ class DBHelper
 
     function getArticle($id){
 
-        $stmt = $this->connection->prepare("SELECT id, title, content FROM articles where id= ".$id);
-        $stmt->execute();
+        $stmt = $this->connection->exec("SELECT id, title, content FROM articles where id= ".$id);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result= $stmt->fetchAll();
         return $result;
@@ -67,22 +63,15 @@ class DBHelper
 
 
     function updateArticle($id, $title,$content){
-
-        $sql = "UPDATE `articles` SET `title` = '$title', `content` = '$content' WHERE `articles`.`id` = $id";
-        $stmt = $this->connection->prepare($sql);
-        $result= $stmt->execute();
-        return $result;
-
+        $stmt = $this->connection->exec("UPDATE `articles` SET `title` = '$title', `content` = '$content' WHERE `articles`.`id` = $id");
     }
 
     function insertArticle( $title,$content, $uid){
-        $sql = "insert into articles (`title`, `content`, `userId`) values ('$title','$content','$uid') ";
-        $this->connection->exec($sql);
+        $this->connection->exec("insert into articles (`title`, `content`, `userId`) values ('$title','$content','$uid') ");
     }
 
     function getUserId($username){
-        $stmt = $this->connection->prepare("SELECT id FROM users where username=\"".$username."\"");
-        $stmt->execute();
+        $stmt = $this->connection->exec("SELECT id FROM users where username=\"".$username."\"");
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $result= $stmt->fetchColumn();
         return $result;
@@ -90,10 +79,7 @@ class DBHelper
 
     function deleteArticle($id){
         $sql = "Delete from `articles` where id =  $id";
-        $stmt = $this->connection->prepare($sql);
-        $result= $stmt->execute();
-        return $result;
-
+        $stmt = $this->connection->exec($sql);
     }
 
 
