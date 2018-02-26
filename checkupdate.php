@@ -7,9 +7,8 @@
  */
 session_start();
 if(!isset($_SESSION["username"])){
-
+    header("Location: /php/login.php");
 } else {
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         include "DBHelper.php";
         $d= new DBHelper("localhost","root","","cms");
@@ -17,6 +16,4 @@ if(!isset($_SESSION["username"])){
         header("Location: /php/index.php");
     }
 }
-
-
 ?>

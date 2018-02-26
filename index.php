@@ -47,7 +47,10 @@ include "DBHelper.php";
     $articles = $db->getArticles($_SESSION["username"]);
     foreach ($articles as $article){
         echo "<tr><td>".$article["title"]."</td>
-        <td>".$article["content"]."</td><td><a href=\"/php/update.php?id=".$article["id"]."\">update</a></td><tr>";
+        <td>".$article["content"]."</td><td><a href=\"/php/update.php?id=".$article["id"]."\">update</a>
+        <a href=\"/php/deleteArticle.php?id=".$article["id"]."\">Delete</a>
+        </td>
+        <tr>";
     }
 ?>
 </table>

@@ -88,6 +88,15 @@ class DBHelper
         return $result;
     }
 
+    function deleteArticle($id){
+        $sql = "Delete from `articles` where id =  $id";
+        $stmt = $this->connection->prepare($sql);
+        $result= $stmt->execute();
+        return $result;
+
+    }
+
+
 
 
 }
