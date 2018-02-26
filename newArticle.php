@@ -7,7 +7,7 @@
  */
     session_start();
     if(!isset($_SESSION["username"])){
-        header("Location: /php/login.php");
+        header("Location: login.php");
     }
 
 
@@ -21,8 +21,9 @@
     Title: <input type="text" name="title" >
     <br>
     <br>
-    Content: <textarea name="content" cols="50">
-    </textarea>
+    Content: <textarea name="content" cols="50"></textarea>
+    <br>
+    <br>
     <input type="submit">
 </form>
 

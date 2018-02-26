@@ -7,7 +7,21 @@
  */
 session_start();
 if(isset($_SESSION["username"])){
-    header('Location: /php/index.php');
+    header('Location: index.php');
+} elseif($_SERVER["REQUEST_METHOD"]=="POST"){
+    include "DBHelper.php";
+    $db= DBHelper::getInstance();
+    if($db->isValidUser()){
+        $_SESSION["username"] = $_REQUEST["username"];
+        $_SESSION["firstname"] = $db->getUserInfo($_SESSION["username"]);
+        $_SESSION["uid"] = $db->getUserId($_SESSION["username"]);
+        $db = null;
+        header('Location: index.php');
+    }else {
+        session_unset();
+        session_destroy();
+        header('Location: login.php');
+    }
 }
 ?>
 <html>
@@ -15,7 +29,7 @@ if(isset($_SESSION["username"])){
     <title>CMS Project</title>
 </head>
 <body>
-<form action="checklogin.php" method="post">
+<form action="login.php" method="post">
     Username: <input type="text" name="username">
     <br>
     <br>
