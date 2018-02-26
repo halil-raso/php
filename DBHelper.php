@@ -47,7 +47,9 @@ class DBHelper
     function isValidUser(){
 
         $dpo =  $this->openConnection();
-        $handle = $dpo->prepare("SELECT id, username, password FROM users where username=\"".$_REQUEST["username"]."\" and password=\"".$_REQUEST["password"]."\"");
+        $handle = $dpo->prepare("SELECT id, username, password FROM users where username=? and password=?");
+        $handle->bindValue(1,$_REQUEST["username"]);
+        $handle->bindValue(2,$_REQUEST["password"]);
         $handle->execute();
         $handle->setFetchMode(PDO::FETCH_ASSOC);
         $result = $handle->rowCount();
@@ -59,7 +61,8 @@ class DBHelper
     function getUserInfo($username){
 
         $dpo =  $this->openConnection();
-        $handle = $dpo->prepare("SELECT firstname FROM users where username=\"".$username."\"");
+        $handle = $dpo->prepare("SELECT firstname FROM users where username=?");
+        $handle->bindValue(1,$username);
         $handle->execute();
         $handle->setFetchMode(PDO::FETCH_ASSOC);
         $result= $handle->fetchColumn();
@@ -72,7 +75,8 @@ class DBHelper
     function getArticles($username){
 
         $dpo =  $this->openConnection();
-        $handle = $dpo->prepare("SELECT id, title, content FROM articles where userId=  (select users.id from users where username=\"".$username."\")");
+        $handle = $dpo->prepare("SELECT id, title, content FROM articles where userId=  (select users.id from users where username=?)");
+        $handle->bindValue(1,$username);
         $handle->execute();
         $result= $handle->fetchAll(PDO::FETCH_ASSOC);
         $this->closeConnection();
@@ -84,10 +88,11 @@ class DBHelper
     function getArticle($id){
 
         $dpo = $this->openConnection();
-        $stmt = $dpo->prepare("SELECT id, title, content FROM articles where id= ".$id);
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $result= $stmt->fetchAll();
+        $handle = $dpo->prepare("SELECT id, title, content FROM articles where id= ?");
+        $handle->bindValue(1,$id);
+        $handle->execute();
+        $handle->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $handle->fetchAll();
         $this->closeConnection();
         return $result;
 
@@ -97,7 +102,10 @@ class DBHelper
     function updateArticle($id, $title,$content){
 
         $dpo = $this->openConnection();
-        $handle = $dpo->prepare("UPDATE `articles` SET `title` = '$title', `content` = '$content' WHERE `articles`.`id` = $id");
+        $handle = $dpo->prepare("UPDATE `articles` SET `title` = ?, `content` = ? WHERE `articles`.`id` = ?");
+        $handle->bindValue(1,$title);
+        $handle->bindValue(2,$content);
+        $handle->bindValue(3,$id);
         $handle->execute();
         $this->closeConnection();
 
@@ -106,7 +114,10 @@ class DBHelper
     function insertArticle( $title,$content, $uid){
 
         $dpo = $this->openConnection();
-        $handle = $dpo->prepare("insert into articles (`title`, `content`, `userId`) values ('$title','$content','$uid') ");
+        $handle = $dpo->prepare("insert into articles (`title`, `content`, `userId`) values (?,?,? ");
+        $handle->bindValue(1,$title);
+        $handle->bindValue(2,$content);
+        $handle->bindValue(3,$uid);
         $handle->execute();
         $this->closeConnection();
 
@@ -115,7 +126,8 @@ class DBHelper
     function getUserId($username){
 
         $dpo = $this->openConnection();
-        $handle = $dpo->prepare("SELECT id FROM users where username=\"".$username."\"");
+        $handle = $dpo->prepare("SELECT id FROM users where username=?");
+        $handle->bindValue(1,$username);
         $handle->execute();
         $handle->setFetchMode(PDO::FETCH_ASSOC);
         $result= $handle->fetchColumn();
@@ -127,7 +139,8 @@ class DBHelper
     function deleteArticle($id){
 
         $dpo = $this->openConnection();
-        $handle = $dpo->prepare("Delete from `articles` where id =  $id");
+        $handle = $dpo->prepare("Delete from `articles` where id =  ?");
+        $handle->bindValue(1,$id);
         $handle->execute();
         $this->closeConnection();
 
