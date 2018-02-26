@@ -21,6 +21,7 @@ if(!isset($_SESSION["username"]) || !isset($_SESSION["firstname"])){
         $title = $article["title"];
         $content = $article["content"];
     }
+    $db = null;
 ?>
 <html>
 <head>

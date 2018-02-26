@@ -14,6 +14,7 @@ $v= $db->isValidUser();
         $_SESSION["username"] = $_REQUEST["username"];
         $_SESSION["firstname"] = $db->getUserInfo($_SESSION["username"]);
         $_SESSION["uid"] = $db->getUserId($_SESSION["username"]);
+        $db = null;
         header('Location: /php/index.php');
     }else {
         session_unset();

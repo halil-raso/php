@@ -12,6 +12,7 @@ if(!isset($_SESSION["username"])){
     include "DBHelper.php";
     $db = new DBHelper("localhost","root","","cms");
     $db->deleteArticle($_REQUEST["id"]);
+    $db = null;
     header("Location: /php/index.php");
 }
 ?>

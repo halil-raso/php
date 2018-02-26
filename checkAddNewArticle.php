@@ -11,8 +11,9 @@ if(!isset($_SESSION["username"])){
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include "DBHelper.php";
-    $d= new DBHelper("localhost","root","","cms");
-    $d->insertArticle($_REQUEST["title"],$_REQUEST["content"],$_SESSION["uid"]);
+    $db= new DBHelper("localhost","root","","cms");
+    $db->insertArticle($_REQUEST["title"],$_REQUEST["content"],$_SESSION["uid"]);
+    $db = null;
     header("Location: /php/index.php");
 }
 ?>

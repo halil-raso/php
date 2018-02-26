@@ -52,6 +52,7 @@ include "DBHelper.php";
         </td>
         <tr>";
     }
+    $db = null;
 ?>
 </table>
 
