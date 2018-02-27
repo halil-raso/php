@@ -7,14 +7,20 @@
  */
 session_start();
 if(!isset($_SESSION["username"]) || !isset($_SESSION["firstname"])){
-    header("Location: /php/login.php");
+    header("Location: login.php");
 }
-
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    include "DBHelper.php";
+    $db = DBHelper::getInstance();
+    $db->updateArticle($_REQUEST["id"],$_REQUEST["title"],$_REQUEST["content"]);
+    header("Location: index.php");
+    $db = null;
+} elseif ($_SERVER["REQUEST_METHOD"]=="GET") {
     if (!isset($_REQUEST["id"])) {
-        header("Location: /php/index.php");
+        header("Location: index.php");
     }
     include "DBHelper.php";
-    $db = new DBHelper("localhost", "root", "", "cms");
+    $db = DBHelper::getInstance();
     $result = $db->getArticle($_REQUEST["id"]);
     foreach ($result as $article) {
         $id = $article["id"];
@@ -22,13 +28,16 @@ if(!isset($_SESSION["username"]) || !isset($_SESSION["firstname"])){
         $content = $article["content"];
     }
     $db = null;
+}
+
+
 ?>
 <html>
 <head>
     <title>Update Title Page</title>
 </head>
 <body>
-<form action="/php/checkupdate.php" method="post">
+<form action="update.php" method="post">
 Title: <input type="text"  name="title" value="<?php echo $title; ?>">
 <br><br>
 <textarea name ="content" cols="50"><?php echo $content; ?></textarea>

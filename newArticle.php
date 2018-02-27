@@ -5,11 +5,17 @@
  * Date: 2/23/2018
  * Time: 3:45 PM
  */
-    session_start();
-    if(!isset($_SESSION["username"])){
-        header("Location: login.php");
-    }
-
+session_start();
+if(!isset($_SESSION["username"]) || !isset($_SESSION["firstname"])){
+    header("Location: login.php");
+}
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    include "DBHelper.php";
+    $db = DBHelper::getInstance();
+    $db->insertArticle($_REQUEST["title"],$_REQUEST["content"],$_SESSION["uid"]);
+    header("Location: index.php");
+    $db = null;
+}
 
 ?>
 <html>
@@ -17,7 +23,7 @@
 
     </title></head>
 <body>
-<form action="checkAddNewArticle.php" method="post">
+<form action="newArticle.php" method="post">
     Title: <input type="text" name="title" >
     <br>
     <br>

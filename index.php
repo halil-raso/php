@@ -7,7 +7,7 @@
  */
 session_start();
 if(!isset($_SESSION["username"])){
-    header('Location: /php/login.php');
+    header('Location: login.php');
 }
 include "DBHelper.php";
 ?>
@@ -32,9 +32,9 @@ include "DBHelper.php";
 </head>
 <body>
 <strong>Welcome</strong><?php echo ": ".$_SESSION["firstname"]."  "; ?>
-<a href="/php/logout.php">Logout</a>
+<a href="logout.php">Logout</a>
 <br>
-<a href="/php/newArticle.php">Add Article</a>
+<a href="newArticle.php">Add Article</a>
 <br>
 <table>
     <tr>
@@ -47,8 +47,8 @@ include "DBHelper.php";
     $articles = $db->getArticles($_SESSION["username"]);
     foreach ($articles as $article){
         echo "<tr><td>".$article["title"]."</td>
-        <td>".$article["content"]."</td><td><a href=\"/php/update.php?id=".$article["id"]."\">update</a>
-        <a href=\"/php/deleteArticle.php?id=".$article["id"]."\">Delete</a>
+        <td>".$article["content"]."</td><td><a href=\"update.php?id=".$article["id"]."\">update</a>
+        <a href=\"deleteArticle.php?id=".$article["id"]."\">Delete</a>
         </td>
         <tr>";
     }

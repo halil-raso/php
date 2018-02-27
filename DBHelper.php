@@ -114,7 +114,7 @@ class DBHelper
     function insertArticle( $title,$content, $uid){
 
         $dpo = $this->openConnection();
-        $handle = $dpo->prepare("insert into articles (`title`, `content`, `userId`) values (?,?,? ");
+        $handle = $dpo->prepare("insert into articles (`title`, `content`, `userId`) values (?,?,? )");
         $handle->bindValue(1,$title);
         $handle->bindValue(2,$content);
         $handle->bindValue(3,$uid);
